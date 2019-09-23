@@ -29,7 +29,7 @@ class VGG16FCN(cnn_basenet.CNNBaseModel):
         super(VGG16FCN, self).__init__()
         self._phase = phase
         self._is_training = self._is_net_for_training()
-        self._net_intermediate_results = collections.OrderedDict()
+        self._net_intermediate_results = collections.OrderedDict() # 创建有序字典  网络中间结果
 
     def _is_net_for_training(self):
         """
@@ -150,7 +150,7 @@ class VGG16FCN(cnn_basenet.CNNBaseModel):
             pool1 = self.maxpooling(
                 inputdata=conv_1_2, kernel_size=2,
                 stride=2, name='pool1'
-            )
+            ) # 大小变为原来一半，如(1,256,512,64) --> (1,128,256,64)
             conv_2_1 = self._vgg16_conv_stage(
                 input_tensor=pool1, k_size=3,
                 out_dims=128, name='conv2_1',
@@ -369,4 +369,4 @@ if __name__ == '__main__':
     model = VGG16FCN(phase='train')
     ret = model.build_model(test_in_tensor, name='vgg16fcn')
     for layer_name, layer_info in ret.items():
-        print('layer name: {:s} shape: {}'.format(layer_name, layer_info['shape']))
+        print('layer name: {:s} shape: {} tensor name: {}'.format(layer_name, layer_info['shape'],layer_info['data'].name))

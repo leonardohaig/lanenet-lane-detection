@@ -50,10 +50,10 @@ class CNNBaseModel(object):
 
             padding = padding.upper()
 
-            if isinstance(kernel_size, list):
+            if isinstance(kernel_size, list): # isinstance 判断一个对象是否是一个已知的类型,此处判断kernel_size属于list类型or属于int
                 filter_shape = [kernel_size[0], kernel_size[1]] + [in_channel / split, out_channel]
             else:
-                filter_shape = [kernel_size, kernel_size] + [in_channel / split, out_channel]
+                filter_shape = [kernel_size, kernel_size] + [in_channel / split, out_channel] # 列表拼接，[3,3,64,61] = [3,3] + [64,64]
 
             if isinstance(stride, list):
                 strides = [1, stride[0], stride[1], 1] if data_format == 'NHWC' \
@@ -63,11 +63,11 @@ class CNNBaseModel(object):
                     else [1, 1, stride, stride]
 
             if w_init is None:
-                w_init = tf.contrib.layers.variance_scaling_initializer()
+                w_init = tf.contrib.layers.variance_scaling_initializer() # 方差缩放初始化
             if b_init is None:
-                b_init = tf.constant_initializer()
+                b_init = tf.constant_initializer() # #将变量初始化为给定的常量
 
-            w = tf.get_variable('W', filter_shape, initializer=w_init)
+            w = tf.get_variable('W', filter_shape, initializer=w_init) # w.shape = filter_shape
             b = None
 
             if use_bias:
